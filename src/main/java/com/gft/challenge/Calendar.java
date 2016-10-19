@@ -22,7 +22,9 @@ class Calendar implements Iterable<LocalDate> {
 
     @Override
     public void forEach(Consumer<? super LocalDate> action) {
-
+        for (LocalDate localDate : this) {
+            action.accept(localDate);
+        }
     }
 
     @Override
@@ -56,7 +58,7 @@ class Calendar implements Iterable<LocalDate> {
 
         @Override
         public void remove() {
-
+            throw new UnsupportedOperationException("Not able to remove date");
         }
     }
 }

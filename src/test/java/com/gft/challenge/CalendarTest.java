@@ -1,25 +1,31 @@
 package com.gft.challenge;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CalendarTest {
 
     private Iterator iterator;
+    private Calendar calendar;
 
     @Before
-    public void setup() {
-        Calendar calendar = new Calendar(LocalDate.of(2016, 9, 19));
+    public void setUp() {
+        calendar = new Calendar(LocalDate.of(2016, 9, 19));
         iterator = calendar.iterator();
     }
 
     @Test
     public void hasNextShouldReturnTrueWhenStartDateNotNull() {
+        iterator = calendar.iterator();
         assertThat(iterator.hasNext()).isTrue();
     }
 
@@ -32,9 +38,21 @@ public class CalendarTest {
 
     @Test
     public void shouldBeAbleToIterateOverFewMondaysAndFridays() {
-        assertThat(iterator.next()).isEqualTo(LocalDate.of(2016,9,20));
-        assertThat(iterator.next()).isEqualTo(LocalDate.of(2016,9,23));
-        assertThat(iterator.next()).isEqualTo(LocalDate.of(2016,9,27));
-        assertThat(iterator.next()).isEqualTo(LocalDate.of(2016,9,30));
+        List<LocalDate> correctDates = Arrays.asList(
+                LocalDate.of(2016,9,20),
+                LocalDate.of(2016,9,23),
+                LocalDate.of(2016,9,27),
+                LocalDate.of(2016,9,30)
+        );
+        for(LocalDate localDate : correctDates) {
+            assertThat(localDate).isEqualTo(iterator.next());
+        }
+    }
+
+    @Test
+    public void shouldThrowUnsupportedOperationException() {
+        assertThatThrownBy(() -> iterator.remove())
+                .isInstanceOf(UnsupportedOperationException.class)
+                .hasMessage("Not able to remove date");
     }
 }
