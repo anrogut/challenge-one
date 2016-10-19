@@ -1,5 +1,10 @@
 language: java
 jdk:
   - oraclejdk8
+
+sudo: false
+
+script: "mvn cobertura:cobertura"
+
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) -t 32b5e2ae-7f40-4238-a5e5-5f52dd9e4b52
