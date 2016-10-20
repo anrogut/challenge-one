@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -16,6 +17,13 @@ public class CalendarIteratorTest {
 
     private static final String DATE_STRING = "2016-09-19";
     private Calendar calendar;
+
+    private List<LocalDate> correctDates = Arrays.asList(
+            LocalDate.of(2016,9,20),
+            LocalDate.of(2016,9,23),
+            LocalDate.of(2016,9,27),
+            LocalDate.of(2016,9,30)
+    );
 
     @Before
     public void setUp() {
@@ -45,15 +53,11 @@ public class CalendarIteratorTest {
     @Test
     public void shouldBeAbleToIterateOverFewMondaysAndFridays() {
         Iterator<LocalDate> iterator = calendar.iterator();
-        List<LocalDate> correctDates = Arrays.asList(
-                LocalDate.of(2016,9,20),
-                LocalDate.of(2016,9,23),
-                LocalDate.of(2016,9,27),
-                LocalDate.of(2016,9,30)
-        );
-        for(LocalDate localDate : correctDates) {
-            assertThat(localDate).isEqualTo(iterator.next());
-        }
+        List<LocalDate> datesFromIterator = correctDates
+                .stream().map(date -> iterator.next())
+                .collect(Collectors.toList());
+
+        assertThat(datesFromIterator).hasSameElementsAs(correctDates);
     }
 
     @Test
