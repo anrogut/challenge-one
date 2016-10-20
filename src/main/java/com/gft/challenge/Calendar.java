@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Consumer;
 
 
@@ -13,6 +14,9 @@ class Calendar implements Iterable<LocalDate> {
 
     Calendar(LocalDate startDate) {
         this.startDate = startDate;
+        if(this.startDate == null) {
+            this.startDate = LocalDate.now();
+        }
     }
 
     @Override
@@ -29,7 +33,7 @@ class Calendar implements Iterable<LocalDate> {
 
     @Override
     public Spliterator<LocalDate> spliterator() {
-        return null;
+        return Spliterators.spliteratorUnknownSize(iterator(),0);
     }
 
     private class CalendarIterator implements Iterator<LocalDate> {
@@ -43,7 +47,7 @@ class Calendar implements Iterable<LocalDate> {
 
         @Override
         public boolean hasNext() {
-            return currentDate != null;
+            return true;
         }
 
         @Override
