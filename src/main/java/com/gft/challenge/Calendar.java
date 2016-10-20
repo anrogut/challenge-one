@@ -3,9 +3,6 @@ package com.gft.challenge;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.function.Consumer;
 
 
 class Calendar implements Iterable<LocalDate> {
@@ -22,18 +19,6 @@ class Calendar implements Iterable<LocalDate> {
     @Override
     public Iterator<LocalDate> iterator() {
         return new CalendarIterator(startDate);
-    }
-
-    @Override
-    public void forEach(Consumer<? super LocalDate> action) {
-        for (LocalDate localDate : this) {
-            action.accept(localDate);
-        }
-    }
-
-    @Override
-    public Spliterator<LocalDate> spliterator() {
-        return Spliterators.spliteratorUnknownSize(iterator(),0);
     }
 
     private class CalendarIterator implements Iterator<LocalDate> {
